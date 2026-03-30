@@ -1,0 +1,155 @@
+<div class="produto-detalhe-container container fade-in">
+  <div *ngIf="produtoNaoEncontrado" class="nao-encontrado">
+    <div class="nao-encontrado-conteudo">
+      <span class="icone-erro">⊘</span>
+      <h2>Produto não encontrado</h2>
+      <p>O produto que você está procurando não existe ou foi removido.</p>
+      <a routerLink="/vitrine" class="btn btn-primary">
+        ← Voltar para Vitrine
+      </a>
+    </div>
+  </div>
+
+  <div *ngIf="produto && !produtoNaoEncontrado" class="produto-detalhe-content">
+    <nav class="breadcrumb-container">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a routerLink="/vitrine">Vitrine</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+          {{ produto.nome }}
+        </li>
+      </ol>
+    </nav>
+
+    <div class="produto-grid">
+      <div class="produto-galeria">
+        <div class="imagem-principal">
+          <span class="badge-promocao-grande" *ngIf="descontoPercentual > 0">
+            {{ descontoPercentual }}% OFF
+          </span>
+          <img [src]="produto.imagem || 'https://via.placeholder.com/500x400/FF6B00/FFFFFF?text=' + produto.nome" [alt]="produto.nome">
+        </div>
+        <div class="imagens-miniatura" *ngIf="produto.quantidade > 0">
+          <div class="miniatura ativo">
+            <img [src]="produto.imagem || 'https://via.placeholder.com/80x80/FF6B00/FFFFFF?text=' + produto.codigo" [alt]="produto.nome">
+          </div>
+        </div>
+      </div>
+
+      <div class="produto-info">
+        <h1 class="produto-titulo">{{ produto.nome }}</h1>
+        
+        <div class="produto-codigo">
+          Código: <strong>{{ produto.codigo }}</strong>
+        </div>
+
+        <div class="produto-descricao-completa">
+          <h3>Descrição do Produto</h3>
+          <p>{{ produto.descritivo }}</p>
+        </div>
+
+        <div class="produto-especificacoes">
+          <h3>Especificações</h3>
+          <ul class="lista-especificacoes">
+            <li>
+              <span class="especificacao-nome">Categoria:</span>
+              <span class="especificacao-valor">Ferramentas</span>
+            </li>
+            <li>
+              <span class="especificacao-nome">Garantia:</span>
+              <span class="especificacao-valor">12 meses</span>
+            </li>
+            <li>
+              <span class="especificacao-nome">Disponibilidade:</span>
+              <span class="especificacao-valor" [class.disponivel]="produto.quantidade > 0" [class.indisponivel]="produto.quantidade <= 0">
+                {{ produto.quantidade > 0 ? 'Em estoque' : 'Esgotado' }}
+              </span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="painel-compra">
+        <div class="painel-compra-header">
+          <h3>Comprar Agora</h3>
+        </div>
+        
+        <div class="painel-compra-body">
+          <div class="precos-detalhe">
+            <div class="preco-antigo" *ngIf="produto.promo < produto.valor">
+              <span class="rotulo">De:</span>
+              <span class="valor">R$ {{ produto.valor | number:'1.2-2' }}</span>
+            </div>
+            <div class="preco-atual">
+              <span class="rotulo" *ngIf="produto.promo < produto.valor">Por:</span>
+              <span class="valor-principal">R$ {{ (produto.promo < produto.valor ? produto.promo : produto.valor) | number:'1.2-2' }}</span>
+            </div>
+            <div class="preco-parcelamento" *ngIf="produto.promo < produto.valor || produto.valor > 100">
+              ou até <strong>12x</strong> de R$ {{ ((produto.promo < produto.valor ? produto.promo : produto.valor) / 12) | number:'1.2-2' }}
+            </div>
+          </div>
+
+          <div class="seletor-quantidade" *ngIf="produto.quantidade > 0">
+            <label class="quantidade-label">Quantidade:</label>
+            <div class="quantidade-controles">
+              <button class="btn-quantidade" (click)="diminuirQuantidade()" [disabled]="quantidade <= 1">
+                −
+              </button>
+              <input type="number" [(ngModel)]="quantidade" [min]="1" [max]="produto.quantidade" class="quantidade-input">
+              <button class="btn-quantidade" (click)="aumentarQuantidade()" [disabled]="quantidade >= produto.quantidade">
+                +
+              </button>
+            </div>
+            <span class="estoque-restante">
+              {{ produto.quantidade }} disponíveis
+            </span>
+          </div>
+
+          <div class="total-compra" *ngIf="produto.quantidade > 0">
+            <span class="total-label">Total:</span>
+            <span class="total-valor">R$ {{ precoFinal | number:'1.2-2' }}</span>
+          </div>
+
+          <div class="botoes-compra">
+            <button class="btn btn-comprar-destaque" (click)="adicionarCesta()" *ngIf="produto.quantidade > 0">
+              Adicionar à Cesta
+            </button>
+            <button class="btn btn-favoritar">
+              Favoritar
+            </button>
+          </div>
+
+          <div class="esgotado-aviso" *ngIf="produto.quantidade <= 0">
+            <span class="icone-aviso">!</span>
+            <p>Produto esgotado. Consulte-nos para previsão de reposição.</p>
+            <button class="btn btn-aviso-estoque">
+              Avisar quando chegar
+            </button>
+          </div>
+        </div>
+
+        <div class="painel-compra-footer">
+          <div class="beneficio-item">
+            <span class="beneficio-icone">→</span>
+            <span class="beneficio-texto">Frete grátis para compras acima de R$ 200</span>
+          </div>
+          <div class="beneficio-item">
+            <span class="beneficio-icone">→</span>
+            <span class="beneficio-texto">Compra 100% segura</span>
+          </div>
+          <div class="beneficio-item">
+            <span class="beneficio-icone">→</span>
+            <span class="beneficio-texto">Entrega em todo o Brasil</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="voltar-container">
+      <a routerLink="/vitrine" class="btn btn-outline-primary">
+        ← Voltar para Vitrine
+      </a>
+    </div>
+  </div>
+</div>

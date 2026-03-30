@@ -1,0 +1,145 @@
+<div class="cadastro-container fade-in">
+  <div class="cadastro-header">
+    <h2>Cadastro de Cliente</h2>
+    <p>Preencha os dados abaixo para criar sua conta</p>
+  </div>
+
+  <div class="cadastro-card">
+    <div class="cadastro-card-header">
+      Dados Pessoais
+    </div>
+    
+    <div class="cadastro-card-body">
+      <div class="mensagem-sucesso" *ngIf="mensagem">
+        {{ mensagem }}
+      </div>
+
+      <form (ngSubmit)="gravar()">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="nome">
+              Nome Completo <span class="obrigatorio">*</span>
+            </label>
+            <input 
+              type="text" 
+              id="nome"
+              class="form-control" 
+              [(ngModel)]="obj.nome" 
+              name="nome"
+              placeholder="Digite seu nome completo"
+              required>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label" for="email">
+              E-mail <span class="obrigatorio">*</span>
+            </label>
+            <input 
+              type="email" 
+              id="email"
+              class="form-control" 
+              [(ngModel)]="obj.email" 
+              name="email"
+              placeholder="seu@email.com"
+              required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="documento">
+              CPF/CNPJ <span class="obrigatorio">*</span>
+            </label>
+            <input 
+              type="text" 
+              id="documento"
+              class="form-control" 
+              [(ngModel)]="obj.documento" 
+              name="documento"
+              placeholder="000.000.000-00"
+              required>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label" for="telefone">
+              Telefone <span class="obrigatorio">*</span>
+            </label>
+            <input 
+              type="text" 
+              id="telefone"
+              class="form-control" 
+              [(ngModel)]="obj.telefone" 
+              name="telefone"
+              placeholder="(00) 00000-0000"
+              required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="logradouro">
+            Endereço Completo <span class="obrigatorio">*</span>
+          </label>
+          <textarea 
+            id="logradouro"
+            rows="3" 
+            class="form-control" 
+            [(ngModel)]="obj.logradouro" 
+            name="logradouro"
+            placeholder="Rua, número, bairro, cidade - UF"
+            required>
+          </textarea>
+        </div>
+
+        <hr class="divisoria">
+        <span class="divisoria-texto">Dados de Acesso</span>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="dataNascimento">
+              Data de Nascimento <span class="obrigatorio">*</span>
+            </label>
+            <input 
+              type="date" 
+              id="dataNascimento"
+              class="form-control" 
+              [(ngModel)]="obj.dataNascimento" 
+              name="dataNascimento"
+              required>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label" for="senha">
+              Senha <span class="obrigatorio">*</span>
+            </label>
+            <input 
+              type="password" 
+              id="senha"
+              class="form-control" 
+              [(ngModel)]="obj.senha" 
+              name="senha"
+              placeholder="Mínimo 6 caracteres"
+              required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="form-check">
+            <input type="checkbox" id="termos" class="form-check-input" required>
+            <label class="form-check-label" for="termos">
+              Li e concordo com os <a href="#">Termos de Uso</a> e <a href="#">Política de Privacidade</a>
+            </label>
+          </div>
+        </div>
+
+        <div class="botoes-container">
+          <button type="submit" class="btn btn-gravar">
+            Gravar Cadastro
+          </button>
+          <button type="button" class="btn btn-cancelar" (click)="limpar()">
+            Limpar
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

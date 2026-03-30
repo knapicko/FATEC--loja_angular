@@ -1,0 +1,52 @@
+<div class="vitrine-container container fade-in">
+  <div class="vitrine-header">
+    <h1>Vitrine de Produtos</h1>
+    <p>Confira nossas ofertas especiais em ferramentas</p>
+  </div>
+
+  <div class="produtos-grid">
+    <div class="produto-card" *ngFor="let obj of lista">
+      <div class="produto-imagem">
+        <span class="badge-promocao" *ngIf="obj.promo < obj.valor">
+          {{ ((1 - obj.promo / obj.valor) * 100) | number:'1.0-0' }}% OFF
+        </span>
+        <img [src]="obj.imagem || 'https://via.placeholder.com/200x180/FF6B00/FFFFFF?text=Ferramenta'" [alt]="obj.nome">
+      </div>
+
+      <div class="produto-corpo">
+        <h3 class="produto-nome">{{ obj.nome }}</h3>
+        <p class="produto-descricao">{{ obj.descritivo }}</p>
+
+        <div class="produto-precos" *ngIf="obj.promo < obj.valor">
+          <div class="preco-de">De: R$ {{ obj.valor | number:'1.2-2' }}</div>
+          <div class="preco-por">Por: <small>R$</small> {{ obj.promo | number:'1.2-2' }}</div>
+        </div>
+        <div class="produto-precos" *ngIf="obj.promo >= obj.valor">
+          <div class="preco-normal">R$ {{ obj.valor | number:'1.2-2' }}</div>
+        </div>
+
+        <div class="produto-estoque">
+          <span class="estoque-disponivel" *ngIf="obj.quantidade > 0">
+            Em estoque: {{ obj.quantidade }} un.
+          </span>
+          <span class="estoque-indisponivel" *ngIf="obj.quantidade <= 0">
+            Produto esgotado
+          </span>
+        </div>
+
+        <div class="produto-botoes" *ngIf="obj.quantidade > 0">
+          <button class="btn btn-comprar" title="Adicionar à cesta">
+            Comprar
+          </button>
+          <button class="btn btn-detalhes" [routerLink]="'/produto/' + obj.codigo" title="Ver detalhes">
+            Detalhes
+          </button>
+        </div>
+
+        <div class="estoque-esgotado" *ngIf="obj.quantidade <= 0">
+          Sem Estoque
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
